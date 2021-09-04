@@ -3,7 +3,7 @@ import discord
 
 app = discord.Client()
 
-token = "ODgzMTY1ODc3MTQ1NTc1NDc0.YTF-UQ.f9_LK1thkvFui34_3QhuRjE2WPc"
+token = "비밀토큰"
 calcResult = 0
 
 @app.event
