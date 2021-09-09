@@ -10,7 +10,7 @@ app = commands.Bot(command_prefix='&')
 
 schedule = scheduleParse.schedule()
 
-token = "ODgzMTY1ODc3MTQ1NTc1NDc0.YTF-UQ.-Psj4xAFl7rXUEV2o3I1LPpamSo"
+token = "token"
 calcResult = 0
 class Administrator(commands.Cog, name="관리자"):
     def __init__(self, app):
@@ -29,9 +29,9 @@ def setup(app):
     app.add_cog(Administrator(app))
 
 
-@app.command(name = '연간행사')
+@app.command(name = '학사일정')
 async def yearSchedule(ctx):
-    embed = discord.Embed(title='연간행사표', description=" ", color=0x00ff56)
+    embed = discord.Embed(title='학사일정표', description=" ", color=0x00ff56)
     embed.set_author(name="충남중학교", url='https://chungnamms.djsch.kr/scheduleH/list.do?section=1&schdYear=2021')
 
     n = 3
@@ -40,9 +40,10 @@ async def yearSchedule(ctx):
         n+=1
     await ctx.send(embed = embed)
 
-@app.command(name = '1학기행사')
+
+@app.command(name = '1학기학사일정')
 async def firstTermSchedule(ctx):
-    embed = discord.Embed(title='연간행사표', description=" ", color=0x00ff56)
+    embed = discord.Embed(title='1학기 학사일정', description=" ", color=0x00ff56)
     embed.set_author(name="충남중학교", url='https://chungnamms.djsch.kr/scheduleH/list.do?section=1&schdYear=2021')
 
     n = 3
@@ -51,9 +52,9 @@ async def firstTermSchedule(ctx):
         n+=1
     await ctx.send(embed = embed)
 
-@app.command(name = '2학기행사')
+@app.command(name = '2학기학사일정')
 async def secondTermSchedule(ctx):
-    embed = discord.Embed(title='연간행사표', description=" ", color=0x00ff56)
+    embed = discord.Embed(title='2학기 학사일정', description=" ", color=0x00ff56)
     embed.set_author(name="충남중학교", url='https://chungnamms.djsch.kr/scheduleH/list.do?section=1&schdYear=2021')
 
     n = 9
@@ -62,20 +63,30 @@ async def secondTermSchedule(ctx):
         n+=1
     await ctx.send(embed = embed)
 
-@app.command(name = '이달의행사')
+@app.command(name = '이번달학사일정') # fixing
 async def monthSchedule(ctx):
-    month = int(datetime.today.month.isoformat())
-    embed = discord.Embed(title=str(month)+'월행사표', description=" ", color=0x00ff56)
+    month = int(datetime.date.today().isoformat()[5:7])
+    embed = discord.Embed(title=str(month)+'월 학사일정', description=" ", color=0x00ff56)
     embed.set_author(name="충남중학교", url='https://chungnamms.djsch.kr/scheduleH/list.do?section=1&schdYear=2021')
     if month < 3:
-        embed.add_field(name='행사', value='\n'.join(schedule[9+month]), inline=True)
+        embed.add_field(name='일정', value='\n'.join(schedule[9+month]), inline=True)
     else:
-        embed.add_field(name='행사', value='\n'.join(schedule[month+2]), inline=True)
+        embed.add_field(name='일정', value='\n'.join(schedule[month+2]), inline=True)
+    await ctx.send(embed = embed)
+
+
+
 
 @app.command(name = '자가진단',pass_context = True)
 async def selfCheck(ctx):
     embed = discord.Embed(color=0x00ff56)
     embed.set_author(name="자가진단 하러가기", url='https://hcs.eduro.go.kr/#/loginHome')
+    await ctx.send(embed = embed)
+
+@app.command(name = '시간표')
+async def sigan(ctx):
+    embed = discord.Embed(color=0x00ff56)
+    embed.set_author(name="시간표 보러가기", url='http://xn--s39aj90b0nb2xw6xh.kr/')
     await ctx.send(embed = embed)
 
 @app.event

@@ -33,6 +33,10 @@ def schedule():
         temp+=1
         n = (n+1 if n != 12 else 1)
 
+    hdr = {'Accept-Language': 'ko_KR,en;q=0.8', 'User-Agent': ('Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Mobile Safari/537.36')} 
+    req = requests.get(url2 , headers=hdr) 
+    html = req.text 
+    soup = BeautifulSoup(html, 'html.parser')
 
 
     for i in soup.select('dl[class=event]'):   # 
