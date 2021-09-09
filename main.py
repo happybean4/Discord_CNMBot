@@ -3,12 +3,14 @@ import discord
 import datetime
 from discord.ext import commands
 import scheduleParse
+from school_guide import *
+import pytz
 app = commands.Bot(command_prefix='&')
 
 
 schedule = scheduleParse.schedule()
 
-token = "비밀코드"
+token = "ODgzMTY1ODc3MTQ1NTc1NDc0.YTF-UQ.-Psj4xAFl7rXUEV2o3I1LPpamSo"
 calcResult = 0
 class Administrator(commands.Cog, name="관리자"):
     def __init__(self, app):
@@ -81,6 +83,45 @@ async def on_message(message):
     await app.process_commands(message)
     if message.author.bot:
         return None
+    msg = message.content #msg == "" or message.content == ""
+
+    if msg == "&공지":
+        embed = discord.Embed(title="**고정된 공지**", description="충남중학교 공지 입니다", timestamp=datetime.datetime.now(pytz.timezone('UTC')), color=0x8cb3ff)
+        intcon = 1
+        fixedNotis = school_gtcon()
+        while intcon <= fixedNotis:            
+            # print(intcon)
+            noti = notify(intcon)
+            embed.add_field(name="{}".format(noti[0]),value="[바로가기!](<{}>)".format(noti[1]),inline=True)
+            intcon = intcon + 1
+        embed.set_footer(text=message.author, icon_url=message.author.avatar_url)
+        msg = await message.channel.send(embed=embed)
+        await msg.add_reaction("▶️")
+        await msg.add_reaction("❌")
+        def check(reaction, user):
+            if user.bot == 1:
+                return None
+            return user == message.author and str(reaction.emoji) == '▶️' or user == message.author and str(reaction.emoji) == '❌'
+        try:
+            reaction, user = await app.wait_for('reaction_add', timeout=10000.0, check=check)
+        except asyncio.TimeoutError:
+            await msg.delete()
+        else:
+            if str(reaction.emoji) == "▶️":
+                await msg.delete()
+                embed = discord.Embed(title="**공지**", description="충남중학교 공지 입니다", timestamp=datetime.datetime.now(pytz.timezone('UTC')), color=0x8cb3ff)
+                intcon = 1
+                while intcon < 11:
+                    intvalue = intcon +fixedNotis
+                    #print(intvalue)
+                    embed.add_field(name="{}".format(school_gt(intvalue)),value="[바로가기!](<{}>)".format(school_gu(intvalue)),inline=True)
+                    intcon = intcon + 1
+                    #print(intvalue)
+                embed.set_footer(text=message.author, icon_url=message.author.avatar_url)
+                await message.channel.send(embed=embed)
+
+            if str(reaction.emoji) == "❌":
+                await msg.delete()
     
             
 app.run(token)
