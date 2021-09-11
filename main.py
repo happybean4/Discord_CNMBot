@@ -10,7 +10,7 @@ app = commands.Bot(command_prefix='&')
 
 schedule = scheduleParse.schedule()
 
-token = "token"
+token = "Ot"
 calcResult = 0
 class Administrator(commands.Cog, name="관리자"):
     def __init__(self, app):
@@ -98,12 +98,13 @@ async def on_message(message):
 
     if msg == "&공지":
         embed = discord.Embed(title="**고정된 공지**", description="충남중학교 공지 입니다", timestamp=datetime.datetime.now(pytz.timezone('UTC')), color=0x8cb3ff)
-        intcon = 1
+        intcon = 0
         fixedNotis = school_gtcon()
+        notis = notifyAll(1)
+
         while intcon <= fixedNotis:            
             # print(intcon)
-            noti = notify(intcon)
-            embed.add_field(name="{}".format(noti[0]),value="[바로가기!](<{}>)".format(noti[1]),inline=True)
+            embed.add_field(name="{}".format(notis[intcon][0]),value="[바로가기!](<{}>)".format(notis[intcon][1]),inline=True)
             intcon = intcon + 1
         embed.set_footer(text=message.author, icon_url=message.author.avatar_url)
         msg = await message.channel.send(embed=embed)
@@ -121,11 +122,13 @@ async def on_message(message):
             if str(reaction.emoji) == "▶️":
                 await msg.delete()
                 embed = discord.Embed(title="**공지**", description="충남중학교 공지 입니다", timestamp=datetime.datetime.now(pytz.timezone('UTC')), color=0x8cb3ff)
-                intcon = 1
-                while intcon < 11:
-                    intvalue = intcon +fixedNotis
+                intcon = fixedNotis
+                
+                for intcon in range(fixedNotis,len(notis)):
+                    
+                    
                     #print(intvalue)
-                    embed.add_field(name="{}".format(school_gt(intvalue)),value="[바로가기!](<{}>)".format(school_gu(intvalue)),inline=True)
+                    embed.add_field(name="{}".format(notis[intcon][0]),value="[바로가기!](<{}>)".format(notis[intcon][1]),inline=True)
                     intcon = intcon + 1
                     #print(intvalue)
                 embed.set_footer(text=message.author, icon_url=message.author.avatar_url)

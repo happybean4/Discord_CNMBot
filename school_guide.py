@@ -69,7 +69,7 @@ def notify(num):  #school_gu, school_gt 통합
         td_list.extend(datal.findAll('td', {'class': "link"})) # 공지 리스트 출력
     return [title(td_list, num),url(js(td_list, num))]
 
-def notifyAll(page):
+def notifyAll(page):  #page의 모든 공지
     html = requests.get("https://chungnamms.djsch.kr/boardCnts/list.do?type=default&page="+str(page)+"&m=0203&lev=0&s=chungnamms&boardID=51642")
     soup = BeautifulSoup(html.text, "html.parser")
     html.close()
@@ -97,7 +97,7 @@ def notifyAll(page):
         notiList.append(x)
     return notiList
 
-def school_gtcon():
+def school_gtcon():  #공지 수
     html = requests.get("https://chungnamms.djsch.kr/boardCnts/list.do?boardID=51642&m=0203&lev=0&s=chungnamms#contents")
     soup = BeautifulSoup(html.text, "html.parser")
     html.close()
@@ -108,35 +108,4 @@ def school_gtcon():
     gcon = len(td_list) # 공지 수
     return int(gcon)
 
-
-def school_gtall():
-    html = requests.get("https://chungnamms.djsch.kr/boardCnts/list.do?boardID=51642&m=0203&lev=0&s=chungnamms#contents")
-    soup = BeautifulSoup(html.text, "html.parser")
-    html.close()
-    datal_list = soup.findAll('div', {'class': 'board-text'})
-    td_list = []
-    for datal in datal_list:
-        td_list.extend(datal.findAll('tr')) # 공지 리스트 출력
-    gcon = len(td_list) # 전체 공지 수
-    return int(gcon)
-
-
-def school_gtnormal():
-    html = requests.get("https://chungnamms.djsch.kr/boardCnts/list.do?type=default&page=1&m=0203&lev=0&s=chungnamms&boardID=51642")
-    soup = BeautifulSoup(html.text, "html.parser")
-    html.close()
-    datal_list = soup.findAll('div', {'class': 'board-text'})
-    td_list = []
-    td_list1 = []
-    for datal in datal_list:
-        td_list.extend(datal.findAll('tr', {'bgcolor': "#EFF8FF"})) # 공지 리스트 출력
-
-    for datal in datal_list:
-        td_list1.extend(datal.findAll('tbody')) # 일반 공지 리스트 출력
-
-    gcon1 = len(td_list) # 공지 수
-    gcon2 = len(td_list1) # 일반 공지 수
-
-    
-    return gcon2
 
